@@ -8,6 +8,9 @@ public class Tile : TileParent {
     public Material regularMaterial;
     public Material blockedMaterial;
     public Material startMaterial;
+    public Material checkpointMaterial;
+    public Material portalMaterial;
+    public Material obstacleMaterial;
     
     // This function is called when something has changed on the board. All 
     // tiles have been created before it is called.
@@ -42,11 +45,18 @@ public class Tile : TileParent {
         }
         
         // 5. Change the material color if this tile is blocked
-        if (TryGetComponent<MeshRenderer>(out var meshRenderer)) {
+        if (TryGetComponent<MeshRenderer>(out var meshRenderer))
+        {
             if (IsBlocked) {
                 meshRenderer.sharedMaterial = blockedMaterial;
             } else if (IsStartPoint){
                 meshRenderer.sharedMaterial = startMaterial;
+            } else if (IsCheckPoint){
+                meshRenderer.sharedMaterial = checkpointMaterial;
+            } else if (IsPortal(out var t0)){
+                meshRenderer.sharedMaterial = portalMaterial;
+            } else if (IsObstacle(out var t1)){
+                meshRenderer.sharedMaterial = obstacleMaterial;
             } else {
                 meshRenderer.sharedMaterial = regularMaterial;
             }

@@ -53,6 +53,9 @@ MonoBehaviour:
   regularMaterial: {fileID: 2100000, guid: fb00334b8266ffc4b9fcd35a88fe486e, type: 2}
   blockedMaterial: {fileID: 2100000, guid: 189cb9f61e9670449b4db204ba67de03, type: 2}
   startMaterial: {fileID: 2100000, guid: 5e8f937e31a83c44bae28dffbd4a887b, type: 2}
+  checkpointMaterial: {fileID: 2100000, guid: 475c25324fc42fe4abba642125121338, type: 2}
+  portalMaterial: {fileID: 2100000, guid: 9ec7b9fcbd642074590865e861018fac, type: 2}
+  obstacleMaterial: {fileID: 2100000, guid: 5371dd88003294443913347d466d6d4f, type: 2}
 --- !u!33 &8064786734946004866
 MeshFilter:
   m_ObjectHideFlags: 0
