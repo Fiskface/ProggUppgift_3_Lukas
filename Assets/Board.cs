@@ -1,5 +1,7 @@
 using BoardGame;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Board : BoardParent
 {
@@ -12,8 +14,12 @@ public class Board : BoardParent
         
         // 2. Iterate over all tiles
         foreach (Tile tile in Tiles) {
-            
+            for (int i = 0; i < tile.transform.childCount; i++)
+            {
+                tile.transform.GetChild(i).GameObject().SetActive(false);
+            }
         }
+        
         
         // 3. Find a tile with a particular coordinate
         Vector2Int coordinate = new Vector2Int(2, 1);

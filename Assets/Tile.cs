@@ -1,5 +1,7 @@
 ﻿using BoardGame;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Tile : TileParent {
     
@@ -11,7 +13,9 @@ public class Tile : TileParent {
     public Material checkpointMaterial;
     public Material portalMaterial;
     public Material obstacleMaterial;
-    
+
+    [SerializeField] private GameObject Blocked;
+
     // This function is called when something has changed on the board. All 
     // tiles have been created before it is called.
     public override void OnSetup(Board board) {
@@ -20,7 +24,7 @@ public class Tile : TileParent {
         
         // 3. Tiles can have different modifiers
         if (IsBlocked) {
-            SetCheckPoint(false);
+            Blocked.SetActive(true);
         }
         
         if (IsObstacle(out int penalty)) {
