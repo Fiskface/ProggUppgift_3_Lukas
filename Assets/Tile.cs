@@ -20,7 +20,7 @@ public class Tile : TileParent {
         
         // 3. Tiles can have different modifiers
         if (IsBlocked) {
-            
+            SetCheckPoint(false);
         }
         
         if (IsObstacle(out int penalty)) {
@@ -67,5 +67,10 @@ public class Tile : TileParent {
     // you access to the 'board' instance.
     public override void OnUpdate(Board board) {
         
+    }
+
+    private void Dijkstra()
+    {
+        //Kolla alltid noden som har kortast avstånd från startrutan. 
     }
 }
