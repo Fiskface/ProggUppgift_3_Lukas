@@ -1,10 +1,15 @@
-﻿using BoardGame;
+﻿using System;
+using BoardGame;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Tile : TileParent {
     
+    public int lengthFromStart = int.MaxValue;
+    public Tile lastTile = null;
+
     // 1. TileParent extends MonoBehavior, so you can add member variables here
     // to store data.
     public Material regularMaterial;
@@ -15,10 +20,18 @@ public class Tile : TileParent {
     public Material obstacleMaterial;
 
     [SerializeField] private GameObject Blocked;
+    [SerializeField] private GameObject Start;
+    [SerializeField] private GameObject Obstacle;
+    [SerializeField] private GameObject Checkpoint;
+    [SerializeField] private GameObject Portal;
+
+    
 
     // This function is called when something has changed on the board. All 
     // tiles have been created before it is called.
     public override void OnSetup(Board board) {
+        ResetValues();
+        
         // 2. Each tile has a unique 'coordinate'
         Vector2Int key = Coordinate;
         
@@ -28,19 +41,20 @@ public class Tile : TileParent {
         }
         
         if (IsObstacle(out int penalty)) {
-            
+            Obstacle.SetActive(true);
         }
         
         if (IsCheckPoint) {
-            
+            Checkpoint.SetActive(true);
         }
         
         if (IsStartPoint) {
-            
+            Start.SetActive(true);
         }
         
         if (IsPortal(out Vector2Int destination)) {
-            
+            Portal.SetActive(true);
+            GameObject.Find("Board").GetComponent<RenderVectors>().AddPortalVectors(new Vector3(Coordinate.x,0, Coordinate.y), new Vector3(destination.x, 0, destination.y));
         }
         
         // 4. Other tiles can be accessed through the 'board' instance
@@ -51,19 +65,13 @@ public class Tile : TileParent {
         // 5. Change the material color if this tile is blocked
         if (TryGetComponent<MeshRenderer>(out var meshRenderer))
         {
-            if (IsBlocked) {
-                meshRenderer.sharedMaterial = blockedMaterial;
-            } else if (IsStartPoint){
-                meshRenderer.sharedMaterial = startMaterial;
-            } else if (IsCheckPoint){
+            meshRenderer.sharedMaterial = regularMaterial;
+
+            if (lengthFromStart < board.maxStep)
+            {
                 meshRenderer.sharedMaterial = checkpointMaterial;
-            } else if (IsPortal(out var t0)){
-                meshRenderer.sharedMaterial = portalMaterial;
-            } else if (IsObstacle(out var t1)){
-                meshRenderer.sharedMaterial = obstacleMaterial;
-            } else {
-                meshRenderer.sharedMaterial = regularMaterial;
             }
+
         }
     }
 
@@ -73,8 +81,9 @@ public class Tile : TileParent {
         
     }
 
-    private void Dijkstra()
+    private void ResetValues()
     {
-        //Kolla alltid noden som har kortast avstånd från startrutan. 
+        lengthFromStart = int.MaxValue;
+        lastTile = null;
     }
 }
