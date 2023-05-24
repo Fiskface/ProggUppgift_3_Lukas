@@ -28,6 +28,7 @@ public class Board : BoardParent
         
         // 2. Iterate over all tiles
         foreach (Tile tile in Tiles) {
+            tile.ResetValues();
             for (int i = 0; i < tile.transform.childCount; i++)
             {
                 tile.transform.GetChild(i).GameObject().SetActive(false);

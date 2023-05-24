@@ -30,8 +30,6 @@ public class Tile : TileParent {
     // This function is called when something has changed on the board. All 
     // tiles have been created before it is called.
     public override void OnSetup(Board board) {
-        ResetValues();
-        
         // 2. Each tile has a unique 'coordinate'
         Vector2Int key = Coordinate;
         
@@ -67,7 +65,7 @@ public class Tile : TileParent {
         {
             meshRenderer.sharedMaterial = regularMaterial;
 
-            if (lengthFromStart < board.maxStep)
+            if (lengthFromStart <= board.maxStep)
             {
                 meshRenderer.sharedMaterial = checkpointMaterial;
             }
@@ -81,7 +79,7 @@ public class Tile : TileParent {
         
     }
 
-    private void ResetValues()
+    public void ResetValues()
     {
         lengthFromStart = int.MaxValue;
         lastTile = null;
