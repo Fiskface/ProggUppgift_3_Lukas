@@ -13,11 +13,7 @@ public class Tile : TileParent {
     // 1. TileParent extends MonoBehavior, so you can add member variables here
     // to store data.
     public Material regularMaterial;
-    public Material blockedMaterial;
-    public Material startMaterial;
-    public Material checkpointMaterial;
-    public Material portalMaterial;
-    public Material obstacleMaterial;
+    public Material reachesMaterial;
 
     [SerializeField] private GameObject Blocked;
     [SerializeField] private GameObject Start;
@@ -67,7 +63,7 @@ public class Tile : TileParent {
 
             if (lengthFromStart <= board.maxStep)
             {
-                meshRenderer.sharedMaterial = checkpointMaterial;
+                meshRenderer.sharedMaterial = reachesMaterial;
             }
 
         }
@@ -82,6 +78,6 @@ public class Tile : TileParent {
     public void ResetValues()
     {
         lengthFromStart = int.MaxValue;
-        lastTile = null;
+        lastTile = this;
     }
 }

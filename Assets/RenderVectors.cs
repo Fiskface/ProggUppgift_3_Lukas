@@ -11,7 +11,8 @@ public class RenderVectors : MonoBehaviour {
     [NonSerialized] 
     private VectorRenderer vectors;
 
-    private List<List<Vector3>> vectorsToDraw = new List<List<Vector3>>();
+    private List<List<Vector3>> portalVectorsToDraw = new List<List<Vector3>>();
+    private List<List<Vector3>> tileVectorsToDraw = new List<List<Vector3>>();
 
     void OnEnable() {
         vectors = GetComponent<VectorRenderer>();
@@ -21,17 +22,20 @@ public class RenderVectors : MonoBehaviour {
     {
         using (vectors.Begin())
         {
-            foreach (var pair in vectorsToDraw)
+            foreach (var pair in portalVectorsToDraw)
             {
                 vectors.Draw(pair[0], pair[1], new Color(0.533f, 0, 1));
             }
-            //vectors.Draw(Vector3.zero, vectorA, Color.red);
+            foreach (var pair in tileVectorsToDraw)
+            {
+                vectors.Draw(pair[0], pair[1], Color.green);
+            }
         }
     }
 
     public void AddPortalVectors(Vector3 start, Vector3 end)
     {
-        start += new Vector3(-0.2f, 0.1f, 0);
+        start += new Vector3(-0.03f, 0.1f, 0);
         end += new Vector3(0, 0.1f, 0);
         var diff = start - end;
         diff *= 0.5f;
@@ -40,38 +44,24 @@ public class RenderVectors : MonoBehaviour {
         List<Vector3> vectorPair1 = new List<Vector3>();
         vectorPair1.Add(start);
         vectorPair1.Add(mid);
-        vectorsToDraw.Add(vectorPair1);
+        portalVectorsToDraw.Add(vectorPair1);
         List<Vector3> vectorPair2 = new List<Vector3>();
         vectorPair2.Add(mid);
         vectorPair2.Add(end);
-        vectorsToDraw.Add(vectorPair2);
+        portalVectorsToDraw.Add(vectorPair2);
+    }
+
+    public void AddTileVectors(Tile tile)
+    {
+        List<Vector3> vectorPair = new List<Vector3>();
+        vectorPair.Add(new Vector3(tile.lastTile.Coordinate.x, 0.1f, tile.lastTile.Coordinate.y));
+        vectorPair.Add(new Vector3(tile.Coordinate.x, 0.1f, tile.Coordinate.y));
+        tileVectorsToDraw.Add(vectorPair);
     }
 
     public void ClearVectorsToDraw()
     {
-        vectorsToDraw.Clear();
+        portalVectorsToDraw.Clear();
+        tileVectorsToDraw.Clear();
     }
 }
-
-/*
-[CustomEditor(typeof(RenderVectors))]
-public class ExampleGUI : Editor {
-    void OnSceneGUI() {
-        var ex = target as RenderVectors;
-        if (ex == null) return;
-
-        EditorGUI.BeginChangeCheck();
-        var a = Handles.PositionHandle(ex.vectorA, Quaternion.identity);
-        var b = Handles.PositionHandle(ex.vectorB, Quaternion.identity);
-        var c = Handles.PositionHandle(ex.vectorC, Quaternion.identity);
-
-        if (EditorGUI.EndChangeCheck()) {
-            Undo.RecordObject(target, "Vector Positions");
-            ex.vectorA = a;
-            ex.vectorB = b;
-            ex.vectorC = c;
-            EditorUtility.SetDirty(target);
-        }
-    }
-}
-*/
