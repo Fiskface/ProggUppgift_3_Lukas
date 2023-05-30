@@ -30,6 +30,7 @@ public class Tile : TileParent {
         Vector2Int key = Coordinate;
         
         // 3. Tiles can have different modifiers
+        //Activates the children based on what the tile is. 
         if (IsBlocked) {
             Blocked.SetActive(true);
         }
@@ -56,7 +57,7 @@ public class Tile : TileParent {
             
         }
         
-        // 5. Change the material color if this tile is blocked
+        // 5. Change the material color if it is within reach of maxStep from start
         if (TryGetComponent<MeshRenderer>(out var meshRenderer))
         {
             meshRenderer.sharedMaterial = regularMaterial;
